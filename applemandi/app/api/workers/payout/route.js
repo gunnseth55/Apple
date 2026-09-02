@@ -1,3 +1,4 @@
+// app/api/workers/payout/route.js
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -15,58 +16,61 @@ export async function GET(req) {
       );
     }
 
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
     const workers = await prisma.worker.findMany({
       where: { merchantId, isActive: true },
       include: {
         attendance: {
           where: {
             date: {
-              gte: new Date(startDate),
-              lte: new Date(endDate),
+              gte: start,
+              lte: end,
             },
           },
         },
       },
     });
 
-    const payroll = workers.map((worker) => {
-      let presentDays = 0;
-      let halfDays = 0;
-      let absentDays = 0;
+    const summary = workers.map((w) => {
+      let present = 0;
+      let half = 0;
+      let absent = 0;
 
-      worker.attendance.forEach((att) => {
-        if (att.status === 'PRESENT') presentDays += 1;
-        else if (att.status === 'HALF_DAY') halfDays += 1;
-        else if (att.status === 'ABSENT') absentDays += 1;
+      w.attendance.forEach((att) => {
+        if (att.status === 'PRESENT') present += 1;
+        else if (att.status === 'HALF_DAY') half += 1;
+        else if (att.status === 'ABSENT') absent += 1;
       });
 
-      const billableDays = presentDays + halfDays * 0.5;
-      const grossAmount = billableDays * worker.baseRate;
+      const billable = present + half * 0.5;
+      const gross = billable * w.baseRate;
 
       return {
-        workerId: worker.id,
-        workerName: worker.name,
-        wageType: worker.wageType,
-        baseRate: worker.baseRate,
-        presentDays,
-        halfDays,
-        absentDays,
-        billableDays,
-        grossAmount,
+        id: w.id,
+        name: w.name,
+        phone: w.phone || 'N/A',
+        wageType: w.wageType,
+        baseRate: w.baseRate,
+        presentDays: present,
+        halfDays: half,
+        absentDays: absent,
+        billableDays: billable,
+        grossPayout: gross,
       };
     });
 
-    const totalGross = payroll.reduce((acc, item) => acc + item.grossAmount, 0);
+    const totalPayout = summary.reduce((acc, curr) => acc + curr.grossPayout, 0);
 
     return NextResponse.json({
       period: { startDate, endDate },
-      totalGrossPayout: totalGross,
-      workers: payroll,
+      totalPayout,
+      workers: summary,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to calculate payouts', details: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
