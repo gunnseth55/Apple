@@ -1,0 +1,6 @@
+applemandi/node_modules/
+applemandi/.next/
+applemandi/.env*
+pricing-engine/venv/
+pricing-engine/__pycache__/
+pricing-engine/*.pyc

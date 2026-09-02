@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+enum Role{
+   MERCHANT
+  BUYER
+  ADMIN
+}
+enum ListingStatus{
+   ACTIVE
+  DRAFT
+  SOLD_OUT
+  FLAGGED_ANOMALY
+}
+enum WageType{
+   DAILY
+  CONTRACT
+}
+enum AttendanceStatus{
+   PRESENT
+  HALF_DAY
+  ABSENT
+}
+model User {
+  id            String    @id @default(uuid())
+  phone         String    @unique
+  name          String
+  role          Role      @default(MERCHANT)
+  preferredLang String    @default("hi")
+  createdAt     DateTime  @default(now())
+  merchant      Merchant?
+}
+
+model Merchant {
+  id           String     @id @default(uuid())
+  userId       String     @unique
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shopName     String
+  district     String
+  state        String
+  pincode      String
+  latitude     Float?
+  longitude    Float?
+  rating       Float      @default(0.0)
+  totalReviews Int        @default(0)
+  listings     Listing[]
+  workers      Worker[]
+  createdAt    DateTime   @default(now())
+}
+
+model Listing {
+  id                 String        @id @default(uuid())
+  merchantId         String
+  merchant           Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  cropType           String
+  variety            String
+  quantity           Float
+  unit               String        @default("kg")
+  askingPricePerUnit Float
+  suggestedMinPrice  Float?
+  suggestedMaxPrice  Float?
+  status             ListingStatus @default(ACTIVE)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([cropType, variety, merchantId])
+}
+
+model Worker {
+  id         String       @id @default(uuid())
+  merchantId String
+  merchant   Merchant     @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  name       String
+  phone      String?
+  wageType   WageType     @default(DAILY)
+  baseRate   Float
+  isActive   Boolean      @default(true)
+  attendance Attendance[]
+  payouts    Payout[]
+  createdAt  DateTime     @default(now())
+}
+
+model Attendance {
+  id       String           @id @default(uuid())
+  workerId String
+  worker   Worker           @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  date     DateTime         @db.Date
+  status   AttendanceStatus @default(PRESENT)
+  loggedAt DateTime         @default(now())
+
+  @@unique([workerId, date])
+}
+
+model Payout {
+  id          String    @id @default(uuid())
+  workerId    String
+  worker      Worker    @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  startDate   DateTime  @db.Date
+  endDate     DateTime  @db.Date
+  totalDays   Float
+  grossAmount Float
+  isPaid      Boolean   @default(false)
+  paidAt      DateTime?
+  createdAt   DateTime  @default(now())
+}
