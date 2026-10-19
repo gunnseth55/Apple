@@ -1,6 +1,42 @@
-applemandi/node_modules/
-applemandi/.next/
-applemandi/.env*
-pricing-engine/venv/
-pricing-engine/__pycache__/
-pricing-engine/*.pyc
+# Dependencies
+node_modules/
+venv/
+.venv/
+
+# Environment variables (keep shareable templates)
+.env*
+!.env.example
+!.env.sample
+!.env.template
+
+# Build output and generated files
+.next/
+/applemandi/out/
+/applemandi/build/
+/applemandi/app/generated/prisma/
+*.tsbuildinfo
+
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Test coverage and logs
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+*.log
+
+# Local deployment state and OS files
+.vercel/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local copies of Git repositories and history
+/.git-history-backup/
+/existing-repo-backup/
+/Apple/
