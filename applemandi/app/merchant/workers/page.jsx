@@ -130,17 +130,17 @@ export default function WorkerManagementPage() {
   };
 
   return (
-    <div style={{ maxWidth: '860px', margin: '40px auto', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-      <h1 style={{ fontSize: '26px', fontWeight: 'bold', marginBottom: '4px' }}>👷 Worker Operations & Payroll</h1>
-      <p style={{ color: '#666', marginBottom: '24px' }}>Log daily attendance, track wage accruals, and export payroll statements.</p>
+    <div className="w-full max-w-[860px] my-10 mx-auto p-6 font-sans">
+      <h1 className="text-[26px] font-bold mb-1"> Worker Operations & Payroll</h1>
+      <p className="text-neutral-500 mb-6">Log daily attendance, track wage accruals, and export payroll statements.</p>
 
       {/* Merchant Selector */}
-      <div style={{ marginBottom: '24px' }}>
-        <label style={{ fontWeight: '600', display: 'block', marginBottom: '6px' }}>Select Merchant Shop:</label>
+      <div className="mb-6">
+        <label className="font-semibold block mb-1.5">Select Merchant Shop:</label>
         <select
           value={selectedMerchantId}
           onChange={(e) => setSelectedMerchantId(e.target.value)}
-          style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+          className="w-full p-2.5 rounded-md border border-neutral-300"
         >
           {merchants.map((m) => (
             <option key={m.id} value={m.id}>
@@ -151,30 +151,30 @@ export default function WorkerManagementPage() {
       </div>
 
       {/* Grid: Register Worker & Attendance Logger */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '24px', marginBottom: '32px' }}>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-6 mb-8">
         {/* Add Worker Card */}
-        <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px' }}>➕ Register Worker</h2>
-          <form onSubmit={handleAddWorker} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+          <h2 className="text-lg font-semibold mb-3"> Register Worker</h2>
+          <form onSubmit={handleAddWorker} className="flex flex-col gap-2.5">
             <input
               type="text"
               placeholder="Worker Name"
               required
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="p-2 rounded-sm border border-neutral-300"
             />
             <input
               type="tel"
               placeholder="Phone (optional)"
               value={newPhone}
               onChange={(e) => setNewPhone(e.target.value)}
-              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="p-2 rounded-sm border border-neutral-300"
             />
             <select
               value={newWageType}
               onChange={(e) => setNewWageType(e.target.value)}
-              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="p-2 rounded-sm border border-neutral-300"
             >
               <option value="DAILY">Daily Wage</option>
               <option value="CONTRACT">Contract Rate</option>
@@ -185,11 +185,11 @@ export default function WorkerManagementPage() {
               required
               value={newRate}
               onChange={(e) => setNewRate(e.target.value)}
-              style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="p-2 rounded-sm border border-neutral-300"
             />
             <button
               type="submit"
-              style={{ padding: '10px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+              className="p-2.5 bg-blue-600 text-white border-0 rounded-sm cursor-pointer font-bold"
             >
               Add Worker
             </button>
@@ -197,60 +197,44 @@ export default function WorkerManagementPage() {
         </div>
 
         {/* Daily Attendance Card */}
-        <div style={{ padding: '16px', background: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: '600' }}>📅 Daily Attendance</h2>
+        <div className="p-4 bg-white rounded-lg border border-slate-200">
+          <div className="flex flex-wrap gap-3 justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold">Daily Attendance</h2>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              style={{ padding: '6px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="p-1.5 rounded-sm border border-neutral-300"
             />
           </div>
 
           {workers.length === 0 ? (
-            <p style={{ color: '#888', fontSize: '14px' }}>No workers registered yet.</p>
+            <p className="text-neutral-500 text-sm">No workers registered yet.</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="flex flex-col gap-2">
               {workers.map((w) => {
                 const currentStatus = attendanceMap[w.id] || 'PRESENT';
                 return (
                   <div
                     key={w.id}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: '8px 12px',
-                      background: '#f1f5f9',
-                      borderRadius: '6px',
-                    }}
+                    className="flex flex-wrap gap-3 justify-between items-center py-2 px-3 bg-slate-100 rounded-md"
                   >
                     <div>
-                      <div style={{ fontWeight: '600', fontSize: '14px' }}>{w.name}</div>
-                      <div style={{ fontSize: '12px', color: '#64748b' }}>₹{w.baseRate}/{w.wageType.toLowerCase()}</div>
+                      <div className="font-semibold text-sm">{w.name}</div>
+                      <div className="text-xs text-slate-500">₹{w.baseRate}/{w.wageType.toLowerCase()}</div>
                     </div>
-                    <div style={{ display: 'flex', gap: '4px' }}>
+                    <div className="flex gap-1">
                       {['PRESENT', 'HALF_DAY', 'ABSENT'].map((status) => {
                         const isSelected = currentStatus === status;
                         const label = status === 'PRESENT' ? 'P' : status === 'HALF_DAY' ? '½' : 'A';
-                        const activeColor = status === 'PRESENT' ? '#16a34a' : status === 'HALF_DAY' ? '#eab308' : '#dc2626';
+                        const activeClass = status === 'PRESENT' ? 'bg-green-600 text-white' : status === 'HALF_DAY' ? 'bg-yellow-500 text-white' : 'bg-red-600 text-white';
 
                         return (
                           <button
                             key={status}
                             type="button"
                             onClick={() => setAttendanceMap({ ...attendanceMap, [w.id]: status })}
-                            style={{
-                              width: '32px',
-                              height: '32px',
-                              borderRadius: '4px',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontWeight: 'bold',
-                              color: isSelected ? '#fff' : '#475569',
-                              background: isSelected ? activeColor : '#e2e8f0',
-                            }}
+                            className={`h-8 w-8 cursor-pointer rounded-sm border-0 font-bold ${isSelected ? activeClass : 'bg-slate-200 text-slate-600'}`}
                           >
                             {label}
                           </button>
@@ -263,16 +247,7 @@ export default function WorkerManagementPage() {
 
               <button
                 onClick={handleSaveAttendance}
-                style={{
-                  marginTop: '12px',
-                  padding: '10px',
-                  background: '#059669',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                }}
+                className="mt-3 p-2.5 bg-emerald-600 text-white border-0 rounded-sm font-bold cursor-pointer"
               >
                 Save {selectedDate} Attendance
               </button>
@@ -282,58 +257,51 @@ export default function WorkerManagementPage() {
       </div>
 
       {/* Payroll Statement Card */}
-      <div style={{ padding: '20px', background: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div className="p-5 bg-white rounded-lg border border-slate-200">
+        <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
           <div>
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold' }}>💰 Payroll Summary (Last 30 Days)</h2>
-            <div style={{ fontSize: '13px', color: '#64748b' }}>
+            <h2 className="text-lg font-bold"> Payroll Summary (Last 30 Days)</h2>
+            <div className="text-[13px] text-slate-500">
               Total Accrued Payout:{' '}
-              <span style={{ fontWeight: 'bold', color: '#0f172a' }}>
+              <span className="font-bold text-slate-900">
                 ₹{payroll ? payroll.totalPayout.toLocaleString('en-IN') : 0}
               </span>
             </div>
           </div>
           <button
             onClick={handleExportCSV}
-            style={{
-              padding: '8px 14px',
-              background: '#0f172a',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '13px',
-            }}
+            className="py-2 px-3.5 bg-slate-900 text-white border-0 rounded-md cursor-pointer font-semibold text-[13px]"
           >
-            📥 Export CSV
+             Export CSV
           </button>
         </div>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid #cbd5e1', color: '#475569' }}>
-              <th style={{ padding: '8px' }}>Worker</th>
-              <th style={{ padding: '8px' }}>Rate</th>
-              <th style={{ padding: '8px' }}>Full / Half / Absent</th>
-              <th style={{ padding: '8px' }}>Billable Days</th>
-              <th style={{ padding: '8px', textAlign: 'right' }}>Gross Payout</th>
-            </tr>
-          </thead>
-          <tbody>
-            {payroll?.workers?.map((row) => (
-              <tr key={row.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                <td style={{ padding: '10px 8px', fontWeight: '600' }}>{row.name}</td>
-                <td style={{ padding: '10px 8px' }}>₹{row.baseRate}</td>
-                <td style={{ padding: '10px 8px' }}>{row.presentDays}P / {row.halfDays}H / {row.absentDays}A</td>
-                <td style={{ padding: '10px 8px' }}>{row.billableDays} days</td>
-                <td style={{ padding: '10px 8px', textAlign: 'right', fontWeight: 'bold', color: '#059669' }}>
-                  ₹{row.grossPayout.toLocaleString('en-IN')}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-[640px] w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b-2 border-slate-300 text-slate-600">
+                <th className="p-2">Worker</th>
+                <th className="p-2">Rate</th>
+                <th className="p-2">Full / Half / Absent</th>
+                <th className="p-2">Billable Days</th>
+                <th className="p-2 text-right">Gross Payout</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {payroll?.workers?.map((row) => (
+                <tr key={row.id} className="border-b border-slate-100">
+                  <td className="py-2.5 px-2 font-semibold">{row.name}</td>
+                  <td className="py-2.5 px-2">₹{row.baseRate}</td>
+                  <td className="py-2.5 px-2">{row.presentDays}P / {row.halfDays}H / {row.absentDays}A</td>
+                  <td className="py-2.5 px-2">{row.billableDays} days</td>
+                  <td className="py-2.5 px-2 text-right font-bold text-emerald-600">
+                    ₹{row.grossPayout.toLocaleString('en-IN')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

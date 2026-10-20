@@ -59,31 +59,24 @@ export default function MerchantOnboarding() {
   };
 
   return (
-    <div style={{ maxWidth: '640px', margin: '40px auto', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>🍎 Mandi Merchant Onboarding</h1>
-        <p style={{ color: '#666' }}>Register your apple orchard or mandi shop to start listing varieties and tracking workers.</p>
+    <div className="w-full max-w-[640px] my-10 mx-auto p-6 font-sans">
+      <div className="mb-6">
+        <h1 className="text-[28px] font-bold mb-2"> Mandi Merchant Onboarding</h1>
+        <p className="text-neutral-500">Register your apple orchard or mandi shop to start listing varieties and tracking workers.</p>
       </div>
 
       {statusMessage && (
         <div
-          style={{
-            padding: '12px 16px',
-            borderRadius: '6px',
-            marginBottom: '20px',
-            backgroundColor: statusMessage.type === 'success' ? '#e6f4ea' : '#fce8e6',
-            color: statusMessage.type === 'success' ? '#137333' : '#c5221f',
-            border: `1px solid ${statusMessage.type === 'success' ? '#ceead6' : '#fad2cf'}`,
-          }}
+          className={`mb-5 border px-4 py-3 rounded-md ${statusMessage.type === 'success' ? 'border-[#ceead6] bg-[#e6f4ea] text-[#137333]' : 'border-[#fad2cf] bg-[#fce8e6] text-[#c5221f]'}`}
         >
           {statusMessage.text}
         </div>
       )}
 
       {!createdMerchant ? (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>Merchant / Owner Name *</label>
+            <label className="block font-semibold mb-1.5">Merchant / Owner Name *</label>
             <input
               type="text"
               name="name"
@@ -91,12 +84,12 @@ export default function MerchantOnboarding() {
               placeholder="e.g. Ramesh Negi"
               value={formData.name}
               onChange={handleChange}
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              className="w-full p-2.5 rounded-md border border-neutral-300"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>Phone Number (Used for Login) *</label>
+            <label className="block font-semibold mb-1.5">Phone Number (Used for Login) *</label>
             <input
               type="tel"
               name="phone"
@@ -104,12 +97,12 @@ export default function MerchantOnboarding() {
               placeholder="e.g. +919816012345"
               value={formData.phone}
               onChange={handleChange}
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              className="w-full p-2.5 rounded-md border border-neutral-300"
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>Shop / Yard Name *</label>
+            <label className="block font-semibold mb-1.5">Shop / Yard Name *</label>
             <input
               type="text"
               name="shopName"
@@ -117,18 +110,18 @@ export default function MerchantOnboarding() {
               placeholder="e.g. Kotkhai Apple Yard"
               value={formData.shopName}
               onChange={handleChange}
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              className="w-full p-2.5 rounded-md border border-neutral-300"
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>District (Mandi Market) *</label>
+              <label className="block font-semibold mb-1.5">District (Mandi Market) *</label>
               <select
                 name="district"
                 value={formData.district}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+                className="w-full p-2.5 rounded-md border border-neutral-300"
               >
                 {districts.map((d) => (
                   <option key={d} value={d}>
@@ -139,7 +132,7 @@ export default function MerchantOnboarding() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>Pincode *</label>
+              <label className="block font-semibold mb-1.5">Pincode *</label>
               <input
                 type="text"
                 name="pincode"
@@ -147,30 +140,30 @@ export default function MerchantOnboarding() {
                 placeholder="e.g. 171202"
                 value={formData.pincode}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+                className="w-full p-2.5 rounded-md border border-neutral-300"
               />
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>State</label>
+              <label className="block font-semibold mb-1.5">State</label>
               <input
                 type="text"
                 name="state"
                 disabled
                 value={formData.state}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #eee', background: '#f9f9f9' }}
+                className="w-full p-2.5 rounded-md border border-neutral-200 bg-neutral-50"
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>Preferred Language</label>
+              <label className="block font-semibold mb-1.5">Preferred Language</label>
               <select
                 name="preferredLang"
                 value={formData.preferredLang}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+                className="w-full p-2.5 rounded-md border border-neutral-300"
               >
                 <option value="hi">हिंदी (Hindi)</option>
                 <option value="en">English</option>
@@ -181,29 +174,19 @@ export default function MerchantOnboarding() {
           <button
             type="submit"
             disabled={loading}
-            style={{
-              marginTop: '12px',
-              padding: '12px',
-              backgroundColor: loading ? '#aaa' : '#059669',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: loading ? 'not-allowed' : 'pointer',
-            }}
+            className="cursor-pointer rounded-md border-0 bg-emerald-600 p-3 text-base font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-neutral-400"
           >
             {loading ? 'Creating Profile...' : 'Complete Merchant Onboarding'}
           </button>
         </form>
       ) : (
-        <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px', background: '#f9fafb' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+        <div className="border border-gray-200 rounded-lg p-5 bg-[#f9fafb]">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
             Welcome, {createdMerchant.name}!
           </h2>
-          <p style={{ margin: '4px 0' }}><strong>Shop:</strong> {createdMerchant.merchant.shopName}</p>
-          <p style={{ margin: '4px 0' }}><strong>Merchant ID:</strong> <code>{createdMerchant.merchant.id}</code></p>
-          <p style={{ margin: '4px 0' }}><strong>Location:</strong> {createdMerchant.merchant.district}, {createdMerchant.merchant.state}</p>
+          <p className="my-1 mx-0"><strong>Shop:</strong> {createdMerchant.merchant.shopName}</p>
+          <p className="my-1 mx-0"><strong>Merchant ID:</strong> <code className="break-all">{createdMerchant.merchant.id}</code></p>
+          <p className="my-1 mx-0"><strong>Location:</strong> {createdMerchant.merchant.district}, {createdMerchant.merchant.state}</p>
 
           <button
             onClick={() => {
@@ -218,15 +201,7 @@ export default function MerchantOnboarding() {
                 preferredLang: 'hi',
               });
             }}
-            style={{
-              marginTop: '16px',
-              padding: '8px 16px',
-              backgroundColor: '#1f2937',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',py
-            }}
+            className="mt-4 py-2 px-4 bg-[#1f2937] text-white border-0 rounded-md cursor-pointer"
           >
             Register Another Merchant
           </button>
